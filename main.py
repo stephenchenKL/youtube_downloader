@@ -23,15 +23,15 @@ class MainWindow(QMainWindow):
         self.url.resize(320, 32)
         self.nameLabel.move(20, 20)
 
-        pybutton = QPushButton('Download', self)
-        pybutton.clicked.connect(self.clickDownload)
-        pybutton.resize(120,32)
-        pybutton.move(10, 60)
+        downloadbutton = QPushButton('Download', self)
+        downloadbutton.clicked.connect(self.clickDownload)
+        downloadbutton.resize(120,32)
+        downloadbutton.move(10, 60)
 
-        pybutton = QPushButton('Clear URL', self)
-        pybutton.clicked.connect(self.clickClearURL)
-        pybutton.resize(120, 32)
-        pybutton.move(140, 60)
+        clearbutton = QPushButton('Clear URL', self)
+        clearbutton.clicked.connect(self.clickClearURL)
+        clearbutton.resize(120, 32)
+        clearbutton.move(140, 60)
 
     def clickDownload(self):
         print('Processing ' + self.url.text())
