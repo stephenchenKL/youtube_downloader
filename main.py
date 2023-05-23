@@ -24,11 +24,16 @@ class MainWindow(QMainWindow):
         self.nameLabel.move(20, 20)
 
         pybutton = QPushButton('Download', self)
-        pybutton.clicked.connect(self.clickMethod)
+        pybutton.clicked.connect(self.clickDownload)
         pybutton.resize(120,32)
         pybutton.move(10, 60)
 
-    def clickMethod(self):
+        pybutton = QPushButton('Clear URL', self)
+        pybutton.clicked.connect(self.clickClearURL)
+        pybutton.resize(120, 32)
+        pybutton.move(140, 60)
+
+    def clickDownload(self):
         print('Processing ' + self.line.text())
         yt = YouTube(self.line.text(), use_oauth=True, allow_oauth_cache=True)
         yt.streams.get_audio_only()
@@ -43,6 +48,9 @@ class MainWindow(QMainWindow):
 
         # result of success
         print(yt.title + " has been successfully downloaded.")
+
+    def clickClearURL(self):
+        print('Clear URL: ' + self.line.text())
 
 if __name__ == "__main__":
     app = QtWidgets.QApplication(sys.argv)
