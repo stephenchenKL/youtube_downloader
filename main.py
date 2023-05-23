@@ -17,10 +17,10 @@ class MainWindow(QMainWindow):
 
         self.nameLabel = QLabel(self)
         self.nameLabel.setText('Youtube URL:')
-        self.line = QLineEdit(self)
+        self.url = QLineEdit(self)
 
-        self.line.move(120, 20)
-        self.line.resize(320, 32)
+        self.url.move(120, 20)
+        self.url.resize(320, 32)
         self.nameLabel.move(20, 20)
 
         pybutton = QPushButton('Download', self)
@@ -34,8 +34,8 @@ class MainWindow(QMainWindow):
         pybutton.move(140, 60)
 
     def clickDownload(self):
-        print('Processing ' + self.line.text())
-        yt = YouTube(self.line.text(), use_oauth=True, allow_oauth_cache=True)
+        print('Processing ' + self.url.text())
+        yt = YouTube(self.url.text(), use_oauth=True, allow_oauth_cache=True)
         yt.streams.get_audio_only()
         video = yt.streams.filter(only_audio=True).first()
         destination = '.'
@@ -50,7 +50,8 @@ class MainWindow(QMainWindow):
         print(yt.title + " has been successfully downloaded.")
 
     def clickClearURL(self):
-        print('Clear URL: ' + self.line.text())
+        print('Clear URL: ' + self.url.text())
+        self.url.clear()
 
 if __name__ == "__main__":
     app = QtWidgets.QApplication(sys.argv)
