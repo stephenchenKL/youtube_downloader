@@ -13,7 +13,7 @@ class MainWindow(QMainWindow):
         QMainWindow.__init__(self)
 
         self.setMinimumSize(QSize(480, 140))
-        self.setWindowTitle("Youtube mp3 convertor")
+        self.setWindowTitle("Youtube MP3 Downloader")
 
         self.nameLabel = QLabel(self)
         self.nameLabel.setText('Youtube URL:')
@@ -33,6 +33,8 @@ class MainWindow(QMainWindow):
         clearbutton.resize(120, 32)
         clearbutton.move(140, 60)
 
+        self.status_bar = self.statusBar()
+
     def clickDownload(self):
         print('Processing ' + self.url.text())
         yt = YouTube(self.url.text(), use_oauth=True, allow_oauth_cache=True)
@@ -40,6 +42,7 @@ class MainWindow(QMainWindow):
         video = yt.streams.filter(only_audio=True).first()
         destination = '.'
         # download the file
+        self.status_bar.showMessage("Downloading " + yt.title)
         out_file = video.download(output_path=destination)
         # save the file
         base, ext = os.path.splitext(out_file)
@@ -48,10 +51,12 @@ class MainWindow(QMainWindow):
 
         # result of success
         print(yt.title + " has been successfully downloaded.")
+        self.status_bar.showMessage("Downloaded " + yt.title)
 
     def clickClearURL(self):
         print('Clear URL: ' + self.url.text())
         self.url.clear()
+        self.status_bar.showMessage("Input new URL to download MP3 ")
 
 if __name__ == "__main__":
     app = QtWidgets.QApplication(sys.argv)
@@ -59,28 +64,3 @@ if __name__ == "__main__":
     mainWin.show()
     sys.exit( app.exec_() )
 
-
-
-# url input from user
-yt = YouTube(
-    str("https://www.youtube.com/watch?v=wMQQN4LZaDs"))
-
-# extract only audio
-print("extract only audio")
-yt.streams.get_audio_only()
-video = yt.streams.filter(only_audio=True).first()
-
-# check for destination to save file
-print("Enter the destination (leave blank for current directory)")
-destination = str(input(">> ")) or '.'
-
-# download the file
-out_file = video.download(output_path=destination)
-
-# save the file
-base, ext = os.path.splitext(out_file)
-new_file = base + '.mp3'
-os.rename(out_file, new_file)
-
-# result of success
-print(yt.title + " has been successfully downloaded.")
