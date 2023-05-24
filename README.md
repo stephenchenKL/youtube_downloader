@@ -16,3 +16,12 @@ typing-extensions 4.6.0
 
 wheel 0.37.1
 
+
+Error:
+pytube.exceptions.RegexMatchError: __init__: could not find match for ^\w+\W
+
+Solution:
+go in the cipher.py file and replace the line 30, which is:
+var_regex = re.compile(r"^\w+\W")
+With this line:
+var_regex = re.compile(r"^\$*\w+\W")
