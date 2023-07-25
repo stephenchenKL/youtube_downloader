@@ -31,7 +31,12 @@ class MainWindow(QMainWindow):
         clearbutton = QPushButton('Clear URL', self)
         clearbutton.clicked.connect(self.clickClearURL)
         clearbutton.resize(120, 32)
-        clearbutton.move(140, 60)
+        clearbutton.move(130, 60)
+
+        directorybutton = QPushButton('Directory to Save MP3', self)
+        directorybutton.clicked.connect(self.chooseDirectory)
+        directorybutton.resize(200, 32)
+        directorybutton.move(250, 60)
 
         self.status_bar = self.statusBar()
 
@@ -56,6 +61,10 @@ class MainWindow(QMainWindow):
     def clickClearURL(self):
         print('Clear URL: ' + self.url.text())
         self.url.clear()
+        self.status_bar.showMessage("Input new URL to download MP3 ")
+
+    def chooseDirectory(self):
+        print('chooseDirectory')
         self.status_bar.showMessage("Input new URL to download MP3 ")
 
 if __name__ == "__main__":
