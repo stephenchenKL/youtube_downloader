@@ -7,6 +7,8 @@ from PyQt5 import QtCore, QtWidgets
 from PyQt5.QtWidgets import QMainWindow, QWidget
 from PyQt5.QtWidgets import QPushButton
 from PyQt5.QtCore import QSize
+from PyQt5.QtWidgets import QDialog, QApplication, QFileDialog
+from PyQt5.uic import loadUi
 
 class MainWindow(QMainWindow):
     def __init__(self):
@@ -22,6 +24,7 @@ class MainWindow(QMainWindow):
         self.url.move(120, 20)
         self.url.resize(320, 32)
         self.nameLabel.move(20, 20)
+        self.mp3Dir = ""
 
         downloadbutton = QPushButton('Download', self)
         downloadbutton.clicked.connect(self.clickDownload)
@@ -45,18 +48,18 @@ class MainWindow(QMainWindow):
         yt = YouTube(self.url.text(), use_oauth=True, allow_oauth_cache=True)
         yt.streams.get_audio_only()
         video = yt.streams.filter(only_audio=True).first()
-        destination = '.'
+        destination = self.mp3Dir
         # download the file
         self.status_bar.showMessage("Downloading " + yt.title)
         out_file = video.download(output_path=destination)
         # save the file
         base, ext = os.path.splitext(out_file)
-        new_file = base + '.mp3'
+        new_file = base + '.mp3'    # rename from .mp4 to mp3
         os.rename(out_file, new_file)
 
         # result of success
         print(yt.title + " has been successfully downloaded.")
-        self.status_bar.showMessage("Downloaded " + yt.title)
+        self.status_bar.showMessage("Saved "+ self.mp3Dir + '/' + yt.title)
 
     def clickClearURL(self):
         print('Clear URL: ' + self.url.text())
@@ -65,7 +68,8 @@ class MainWindow(QMainWindow):
 
     def chooseDirectory(self):
         print('chooseDirectory')
-        self.status_bar.showMessage("Input new URL to download MP3 ")
+        self.mp3Dir = QtWidgets.QFileDialog.getExistingDirectory(self, "Open a folder", directory=os.getcwd())
+        self.status_bar.showMessage("Save MP3 in Directory: " + self.mp3Dir)
 
 if __name__ == "__main__":
     app = QtWidgets.QApplication(sys.argv)
